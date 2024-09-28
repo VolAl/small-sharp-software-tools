@@ -1,0 +1,40 @@
+**Ex.3.a. - Find the most popular URL on the site.**
+`grep -e '\bhttp.*com\/\b' sharptools/code/streams_of_text/awesome.log |
+awk -F 'http|com/' '{print "http" $2 "com"}' |
+awk '{count[$1]++} END { for (url in count) print count[url], url} ' |
+sort -nr |
+head -n 1`
+
+**Ex.3.b. - Find the least popular URL on the site.**
+`grep -e '\bhttp.*com\/\b' sharptools/code/streams_of_text/awesome.log |
+awk -F 'http|com/' '{print "http" $2 "com"}' |
+awk '{count[$1]++} END { for (url in count) print count[url], url} ' |
+sort -nr |
+tail -n 1`
+
+**Ex.3.c - Find the most frequent visitor to the site by IP address.**
+`awk -F ' ' '{print $1}' sharptools/code/streams_of_text/awesome.log |
+awk '{count[$1]++} END { for (ip in count) print count[ip], ip} ' |
+sort -nr |
+head -n 1`
+
+**Ex.3.d - Find the most popular web browser used to access the site.**
+`grep -e '\bMozilla.*\b' sharptools/code/streams_of_text/awesome.log |
+awk -F 'Mozilla' '{print "\"Mozilla " $2}' |
+awk -F '"' '{count[$2]++} END { for (browser in count) print count[browser], browser} ' |
+sort -nr |
+head -n 1`
+
+**Ex.3.d - (Refined for browser's name).**
+`grep -e '\bMozilla.*\b' sharptools/code/streams_of_text/awesome.log |
+awk -F 'Mozilla' '{print "\"Mozilla " $2}' |
+awk -F '"' '{count[$2]++} END { for (browser in count) print count[browser], browser} ' |
+sort -nr |
+head -n 1 |
+awk '{ if(/Firefox/) {print "Firefox"} 
+	else if(/MSIE/) {print "Internet Explorer" }
+	else if(/Opera/) {print "Opera"}
+	else if(/Chrome/) {print "Chrome"}
+	else if(/Safari/) {print "Safari"}
+	else { print "Browser not found"}}'`
+
