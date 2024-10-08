@@ -1,0 +1,59 @@
+#!/usr/bin/env bash
+
+set -e
+
+if [ $# -eq 0 ]; then
+ read -p "Enter the name of the directory to create: " directory
+ if [ -z "${directory}" ]; then
+  echo "You didn't enter anything.Exiting. "
+  exit 1
+ fi
+else
+ directory=$1
+fi
+
+read -p "Enter the name of your site: " sitename
+ if [ -z "${sitename}" ]; then
+  echo "You didn't enter anything.Exiting. "
+  exit 1 
+ fi
+
+mkdir -p "${directory}"/{images,output,pages,scripts,styles,templates}
+
+cat ~/makesite/Makefile > "${directory}"/Makefile
+
+cat << 'EOF' > "${directory}"/styles/style.css
+body {
+ background-color: lightyellow;
+}
+h1 {
+ color: blue;
+}
+EOF
+
+cat << EOF > "${directory}"/templates/header.html
+<!DOCTYPE html>
+<html lang="en-US">
+ <head>
+  <meta charset="utf-8">
+  <title>My $sitename</title>
+  <link rel="stylesheet" href="styles/style.css">
+ </head>
+ <body>
+EOF
+
+cat << EOF > "${directory}"/templates/footer.html
+</body>
+ <footer>
+  <p>Copyright $(date +"%Y.%m.%d-%H:%M")</p>
+ </footer>
+</html>
+EOF
+
+cat << EOF > "${directory}"/pages/index.html
+  <h1>Welcome</h1>
+EOF
+
+sed -e 's/Welcome/About Us/' "${directory}"/pages/index.html > "${directory}"/pages/about.html
+sed -e 's/Welcome/Contact Us/' "${directory}"/pages/index.html > "${directory}"/pages/contact.html
+
