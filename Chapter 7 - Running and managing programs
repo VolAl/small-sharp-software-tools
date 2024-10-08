@@ -1,0 +1,5 @@
+Ex.1. - Create nested directory structure with one command
+`mkdir -p awesomeco/{accounting,engineering,hr,marketing}/{index,mission,staff}.html`
+
+Ex.2. - Use command substitution and history to create same dir structure again, but use amazingtek instead of awesomeco.
+`mkdir -p !1354:2:s/awesomeco/amazingtek`
